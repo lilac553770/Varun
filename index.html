@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            background-color: #fce4ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        #card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+        }
+        img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            max-height: 250px;
+            object-fit: cover;
+        }
+        h1 { color: #ad1457; font-size: 1.8rem; margin-bottom: 25px; }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 60px;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #yesBtn { background-color: #ff4081; color: white; }
+        #yesBtn:hover { transform: scale(1.1); background-color: #f50057; }
+        
+        #noBtn {
+            background-color: #757575;
+            color: white;
+            position: fixed; /* Ensures it can jump anywhere on the screen */
+            transition: 0.1s;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="card">
+        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueXFqZzV3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3JmthcmN5ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qUIm586OT59C/giphy.gif" alt="Puppy Eyes">
+        <h1 id="text">Will you be my Valentine, <span id="userName">Handsome</span>?</h1>
+        <div class="btn-group">
+            <button id="yesBtn">YES</button>
+            <button id="noBtn">NO</button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const gif = document.getElementById('mainGif');
+        const text = document.getElementById('text');
+        const userSpan = document.getElementById('userName');
+
+        // 1. Personalization Logic
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        if (name) {
+            userSpan.innerText = name;
+        }
+
+        // 2. The "No" Button Evasion Logic
+        const moveButton = () => {
+            const padding = 50;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        };
+
+        noBtn.addEventListener('mouseenter', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents accidental clicking on mobile
+            moveButton();
+        });
+
+        // 3. Success State Logic
+        yesBtn.addEventListener('click', () => {
+            const finalName = name || "Handsome";
+            text.innerHTML = `LET'S GOOO ${finalName.toUpperCase()}! <br> See you on the 14th! ❤️`;
+            
+            // Celebration GIF
+            gif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZueXFqZzV3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3ZzR3JmthcmN5ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HU7yHIK6Nc3Wsig/giphy.gif";
+            
+            noBtn.style.display = 'none';
+            yesBtn.style.display = 'none';
+            document.body.style.backgroundColor = "#fff9c4"; // Happy Yellow background
+        });
+    </script>
+</body>
+</html>
